@@ -1,5 +1,7 @@
 # TIE
 
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.tie-integration-engine/tie-core)](https://central.sonatype.com/artifact/io.github.tie-integration-engine/tie-core)
+
 TIE is a stateless Java library for file integrations. It moves files between systems (SFTP, local
 directories or streams you provide), reads and writes them as CSV, XLSX, XML or JSON, and turns every
 value into a typed field through a declarative field engine. It stores nothing: configuration and
