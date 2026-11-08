@@ -1,5 +1,6 @@
 # TIE
 
+[![CI](https://github.com/tie-integration-engine/tie/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/tie-integration-engine/tie/actions/workflows/ci.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.tie-integration-engine/tie-core)](https://central.sonatype.com/artifact/io.github.tie-integration-engine/tie-core)
 
 TIE is a stateless Java library for file integrations. It moves files between systems (SFTP, local
