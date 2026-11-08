@@ -21,6 +21,14 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>themarioga</id>
+            <name>themarioga</name>
+            <url>https://github.com/themarioga</url>
+        </developer>
+    </developers>
+
     <scm>
         <url>https://github.com/tie/tie</url>
         <connection>scm:git:https://github.com/tie/tie.git</connection>
@@ -52,6 +60,9 @@
         <sshd.version>2.20.1</sshd.version>
         <json-schema-validator.version>3.0.9</json-schema-validator.version>
 
+        <!-- Integration tests tagged "slow" (1 GB streams, 200,000-row XLSX) only run with -P release -->
+        <tie.excludedTestGroups>slow</tie.excludedTestGroups>
+
         <!-- Plugins -->
         <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.6.1</maven-surefire-plugin.version>
@@ -60,6 +71,8 @@
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+        <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+        <central-publishing-maven-plugin.version>0.12.0</central-publishing-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -166,6 +179,12 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven-javadoc-plugin.version}</version>
+                    <configuration>
+                        <!-- every doclint check except missing comments on each record component -->
+                        <doclint>all,-missing</doclint>
+                        <failOnWarnings>true</failOnWarnings>
+                        <excludePackageNames>org.tie.internal*</excludePackageNames>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -201,6 +220,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <excludedGroups>${tie.excludedTestGroups}</excludedGroups>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -217,6 +239,9 @@
         <!-- Completed in F9: signing and Maven Central publication. -->
         <profile>
             <id>release</id>
+            <properties>
+                <tie.excludedTestGroups>no-excluded-tests</tie.excludedTestGroups>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -242,6 +267,44 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--
+          Publication to Maven Central: mvn -P release,central deploy
+          Needs a GPG key and a Central Portal token in ~/.m2/settings.xml (server id "central").
+          The deployment is uploaded for manual review in the portal (autoPublish=false).
+          Before the first publication, check that the io.github.tie namespace is verified for you.
+        -->
+        <profile>
+            <id>central</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven-gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${central-publishing-maven-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>false</autoPublish>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

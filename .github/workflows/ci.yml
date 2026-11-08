@@ -18,5 +18,9 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
-      - name: Build and test
-        run: ./mvnw -B -ntp verify
+      - name: Build, test (slow tests included), sources and javadoc
+        run: ./mvnw -B -ntp -P release install
+      - name: Smoke test the examples against the installed artifacts
+        run: |
+          ./mvnw -B -ntp -f examples/plain-java/pom.xml verify
+          ./mvnw -B -ntp -f examples/spring-boot/pom.xml verify
