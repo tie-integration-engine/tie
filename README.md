@@ -141,5 +141,10 @@ partial file never appears under its final name.
 ./mvnw -P release verify    # also the slow tests (1 GB streams), sources and javadoc
 ```
 
-The `examples/` directory has a plain Java and a Spring Boot application built against the installed
-artifacts (`./mvnw install` first).
+The `examples/` directory has two applications built against the installed artifacts (`./mvnw install`
+first):
+
+- `examples/plain-java`: the same import configured with the Java API, a YAML document and a JSON
+  document; a test checks that the three give equal definitions and the same records.
+- `examples/spring-boot`: a service that loads its definition from a YAML file on the classpath and uses
+  a `FieldTransformer` bean through the auto-configured `Tie`.

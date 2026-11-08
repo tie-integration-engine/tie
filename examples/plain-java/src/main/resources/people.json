@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "id": "people",
+  "direction": "IMPORT",
+  "inputChannels": [
+    { "type": "LOCAL_DIRECTORY", "directory": "@INPUT_DIRECTORY@" }
+  ],
+  "layouts": [
+    {
+      "name": "person",
+      "fileNamePattern": "people_{timestamp:yyyyMMdd}",
+      "allowedFormats": ["CSV"],
+      "formatOptions": { "csv": { "separator": ";" } },
+      "fields": [
+        { "name": "taxId", "column": "nif", "textTransforms": ["UPPER"] },
+        { "name": "born", "type": "DATE", "typeFormat": "dd/MM/yyyy" },
+        {
+          "name": "sex",
+          "translations": [
+            { "from": "M", "to": "Male" },
+            { "from": "F", "to": "Female" }
+          ]
+        },
+        { "name": "country", "inInput": false, "defaultValue": "ES" }
+      ]
+    }
+  ]
+}
