@@ -16,12 +16,12 @@ Requires Java 25. Licensed under the MIT License.
 
 | Artifact | Contents |
 |---|---|
-| `io.github.tie:tie-core` | Model, field engine, formats, channels, JSON/YAML loading. No Spring. |
-| `io.github.tie:tie-spring-boot-starter` | Optional Spring Boot 4 auto-configuration. |
+| `io.github.tie-integration-engine:tie-core` | Model, field engine, formats, channels, JSON/YAML loading. No Spring. |
+| `io.github.tie-integration-engine:tie-spring-boot-starter` | Optional Spring Boot 4 auto-configuration. |
 
 ```xml
 <dependency>
-    <groupId>io.github.tie</groupId>
+    <groupId>io.github.tie-integration-engine</groupId>
     <artifactId>tie-core</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>

@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.tie</groupId>
+    <groupId>io.github.tie-integration-engine</groupId>
     <artifactId>tie-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>TIE</name>
     <description>Stateless streaming file integration library: channels, formats and a typed field engine.</description>
-    <url>https://github.com/tie/tie</url>
+    <url>https://github.com/tie-integration-engine/tie</url>
 
     <licenses>
         <license>
@@ -30,9 +30,9 @@
     </developers>
 
     <scm>
-        <url>https://github.com/tie/tie</url>
-        <connection>scm:git:https://github.com/tie/tie.git</connection>
-        <developerConnection>scm:git:git@github.com:tie/tie.git</developerConnection>
+        <url>https://github.com/tie-integration-engine/tie</url>
+        <connection>scm:git:https://github.com/tie-integration-engine/tie.git</connection>
+        <developerConnection>scm:git:git@github.com:tie-integration-engine/tie.git</developerConnection>
     </scm>
 
     <modules>
@@ -78,7 +78,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.github.tie</groupId>
+                <groupId>io.github.tie-integration-engine</groupId>
                 <artifactId>tie-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -276,7 +276,7 @@
           Publication to Maven Central: mvn -P release,central deploy
           Needs a GPG key and a Central Portal token in ~/.m2/settings.xml (server id "central").
           The deployment is uploaded for manual review in the portal (autoPublish=false).
-          Before the first publication, check that the io.github.tie namespace is verified for you.
+          The io.github.tie-integration-engine namespace must be verified in the Central Portal (GitHub organization tie-integration-engine).
         -->
         <profile>
             <id>central</id>
