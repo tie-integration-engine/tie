@@ -134,6 +134,32 @@ partial file never appears under its final name.
 - XML DTDs and external entities are rejected; XLSX files above POI's compression limits are rejected.
 - Values that look like spreadsheet formulas are neutralized in CSV/XLSX result reports.
 
+## Repositories
+
+This repository holds the parent pom, the examples and the CI. The modules live in their own
+repositories, included here as git submodules:
+
+| Module | Repository |
+|---|---|
+| `tie-core` | [tie-integration-engine/tie-core](https://github.com/tie-integration-engine/tie-core) |
+| `tie-spring-boot-starter` | [tie-integration-engine/tie-spring-boot-starter](https://github.com/tie-integration-engine/tie-spring-boot-starter) |
+
+Clone with the submodules:
+
+```shell
+git clone --recurse-submodules https://github.com/tie-integration-engine/tie.git
+# or, in an existing clone:
+git submodule update --init
+```
+
+A change to a module is committed and pushed in that module's repository first; then this repository
+records the new module commit:
+
+```shell
+cd tie-core && git switch main && git commit -am "…" && git push && cd ..
+git add tie-core && git commit -m "Update tie-core" && git push
+```
+
 ## Building
 
 ```shell

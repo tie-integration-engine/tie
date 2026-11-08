@@ -1,0 +1,6 @@
+[submodule "tie-core"]
+	path = tie-core
+	url = https://github.com/tie-integration-engine/tie-core.git
+[submodule "tie-spring-boot-starter"]
+	path = tie-spring-boot-starter
+	url = https://github.com/tie-integration-engine/tie-spring-boot-starter.git
