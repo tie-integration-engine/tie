@@ -6,6 +6,29 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `defaultMode` on a field with `defaultValue` (`DefaultMode.CONVERT` or `TEXT`, also in YAML/JSON and the
+  schema). With `TEXT`, the resolved default is validated but not converted, and reaches the consumer as a
+  `String` whatever the field's type: an unresolved `${…}` template no longer rejects the line. `CONVERT`, the
+  default, keeps the 0.2.0 behaviour. Ignored on export.
+- XLSX reading options `skipBlankRecords` (as in CSV: a row whose cells are all blank is dropped and uses no
+  line number), `cellValues` (`XlsxCellValues.CANONICAL`, the default, or `FORMATTED`: the text Excel
+  displays per the cell's number format, e.g. `08001`, `25%`, `15/03/2024`) and `locale` (BCP 47, default
+  `Locale.ROOT`) for `FORMATTED`. `XlsxOptions` gets a builder like `CsvOptions`.
+- `TypeFormat.date(pattern, locale)` and `typeFormat: { pattern, locale }` in documents: month and day names
+  and AM/PM of that locale (e.g. `31-dic-2026` with `es-ES`), when reading and writing.
+
+### Changed
+
+- `XlsxOptions` has three new record components (`skipBlankRecords`, `cellValues`, `locale`), so its
+  canonical constructor changed; use `XlsxOptions.builder()`. `XlsxOptions.DEFAULTS` keeps the same values.
+- `TypeFormat.DateFormat` has a new `locale` component: its canonical constructor and record patterns
+  (`DateFormat(String pattern)`) no longer compile. `TypeFormat.date(pattern)` is unchanged.
+- `RecordView.get(field)` is no longer always of the field's Java type: a `defaultMode: TEXT` field that took
+  its default holds a `String`, and `get(field, LocalDate.class)` throws `ClassCastException` for it.
+- `FieldDefinition` has a new `defaultMode` component after `defaultValue`. The builder is unaffected.
+
 ## [0.2.0] — 2026-11-09
 
 ### Added

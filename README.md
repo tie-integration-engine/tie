@@ -79,10 +79,13 @@ layouts:
     allowedFormats: [CSV, XLSX]
     formatOptions:
       csv: { separator: ";" }
+      xlsx: { cellValues: FORMATTED, locale: es-ES, skipBlankRecords: true }   # cells as Excel shows them
     fields:
       - { name: taxId, column: nif, textTransforms: [UPPER] }
       - { name: born, type: DATE, typeFormat: dd/MM/yyyy }
       - { name: bornIso, inInput: false, copyFrom: born, copyMode: CANONICAL }   # 2026-12-31
+      - { name: signed, type: DATE, typeFormat: { pattern: dd-MMM-yyyy, locale: es-ES } }   # 31-dic-2026
+      - { name: loaded, inInput: false, type: DATE, defaultValue: "${loadDate}", defaultMode: TEXT }
 ```
 
 ```java
@@ -115,6 +118,7 @@ tie:
 | The post-success move, delete or result report fails | Warning; the file still counts as applied |
 | An export exceeds its threshold or is cancelled | Nothing is delivered |
 | Delivery to a name that already exists | `onExistingFile`: `SUFFIX` (default), `FAIL` or `OVERWRITE` |
+| A field with `defaultMode: TEXT` takes its default | The consumer gets the resolved text, a `String`, whatever the field's type |
 
 Deliveries are always written under a temporary `.<name>.part` name and renamed at the end, so a
 partial file never appears under its final name.
