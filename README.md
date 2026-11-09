@@ -20,6 +20,7 @@ Requires Java 25. Licensed under the MIT License.
 | Artifact | Contents |
 |---|---|
 | `io.github.tie-integration-engine:tie-core` | Model, field engine, formats, channels, JSON/YAML loading. No Spring. |
+| `io.github.tie-integration-engine:tie-jexl` | Optional programmable fields with Apache Commons JEXL. |
 | `io.github.tie-integration-engine:tie-spring-boot-starter` | Optional Spring Boot 4 auto-configuration. |
 
 ```xml
@@ -100,11 +101,56 @@ known in advance, by position: on import, an XML layout without `recordElement` 
 element as a record, and `json: { firstArray: true }` reads the root array or the first array property of the
 root object. A layout fed only by provided inputs (`PROVIDED_STREAM`) does not need a `fileNamePattern`.
 
+### Writing a definition
+
+A definition built with the Java API can be written as the document `DefinitionLoader` reads, to store it, show
+it or compare versions:
+
+```java
+String yaml = DefinitionWriter.toYaml(definition);   // or toJson
+```
+
+The definition is validated first, options with their default value are left out and the key order is fixed, so
+equal definitions give the same text. Literal credentials are written as `***`: such a document does not load
+until the real value or a `${secret:name}` reference is put back.
+
+### Programmable fields
+
+With `tie-jexl`, a field can compute its value with an [Apache Commons JEXL](https://commons.apache.org/proper/commons-jexl/)
+expression. A family member under 16 without an identity document takes the holder's:
+
+```yaml
+layouts:
+  - name: holder
+    fileNamePattern: families_{timestamp:yyyyMMdd}
+    allowedFormats: [JSON]
+    fields:
+      - { name: idDocument }
+  - name: member
+    parent: holder
+    nestedKey: members
+    fields:
+      - { name: birthDate, type: DATE }
+      - name: idDocument
+        expression: "value != null ? value : (tie:age(birthDate) < 16 ? parent.idDocument : null)"
+```
+
+```java
+Tie tie = Tie.builder().expressionEngine(new JexlExpressionEngine()).build();
+```
+
+On import, expressions run after the other steps of every field, in declaration order. They see `value` (the
+field's own value), the other fields by name, `record`, `parent` (and `parent.parent`), `today` (from the clock of
+`Tie`) and `vars` (the context variables); the result is converted to the field's type and validated. On export
+they run over the supplied values. The functions `tie:age`, `tie:years`, `tie:blank`, `tie:date`, `tie:format` and
+`tie:coalesce` are available. A failure rejects the line with `EXPRESSION_FAILED`.
+
 ### With Spring Boot
 
 Add `tie-spring-boot-starter`. It creates a `Tie` bean unless you declare one, registers every
-`FieldTransformer` bean under its bean name, and uses your `DefaultValueResolver`, `SecretProvider`
-and `Clock` beans if present.
+`FieldTransformer` bean under its bean name, and uses your `DefaultValueResolver`, `SecretProvider`,
+`ExpressionEngine` and `Clock` beans if present. With `tie-jexl` on the classpath it registers a
+`JexlExpressionEngine` unless you declare your own.
 
 ```yaml
 tie:
@@ -145,6 +191,8 @@ partial file never appears under its final name.
 - Record values are never logged above DEBUG.
 - XML DTDs and external entities are rejected; XLSX files above POI's compression limits are rejected.
 - Values that look like spreadsheet formulas are neutralized in CSV/XLSX result reports.
+- `tie-jexl` expressions run in a sandbox: no access to classes, files, network or processes, no loops, `new`,
+  assignments or side effects. An expression is still code: restrict who can edit them.
 
 ## Repositories
 
@@ -154,6 +202,7 @@ repositories, included here as git submodules:
 | Module | Repository |
 |---|---|
 | `tie-core` | [tie-integration-engine/tie-core](https://github.com/tie-integration-engine/tie-core) |
+| `tie-jexl` | [tie-integration-engine/tie-jexl](https://github.com/tie-integration-engine/tie-jexl) |
 | `tie-spring-boot-starter` | [tie-integration-engine/tie-spring-boot-starter](https://github.com/tie-integration-engine/tie-spring-boot-starter) |
 
 Clone with the submodules:

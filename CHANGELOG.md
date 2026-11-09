@@ -6,6 +6,31 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `DefinitionWriter.toJson` / `toYaml`: an `IntegrationDefinition` built with the Java API (or loaded) written as
+  the JSON or YAML document that `DefinitionLoader` reads back. The definition is validated first; keys follow the
+  schema order, defaults are left out, so equal definitions give the same text. Literal credentials (`password`,
+  `privateKey`, `privateKeyPassphrase` that are not a `${secret:name}` reference) are written as `***`.
+- Programmable fields: `expression` on a field computes its final value. On import it runs in a second pass, in
+  declaration order, and sees the field's value, the other fields, the parent record (`parent`, `parent.parent`),
+  `today` and the context variables; the result is converted to the field's type and validated. On export it runs
+  over the supplied values before the export steps. New SPI `ExpressionEngine` (`Tie.Builder.expressionEngine`),
+  new line error code `EXPRESSION_FAILED`.
+- New module `tie-jexl`: `JexlExpressionEngine`, with Apache Commons JEXL in a restricted sandbox (no class access,
+  loops, `new` or side effects; misspelt names are errors) and the functions `tie:age`, `tie:years`, `tie:blank`,
+  `tie:date`, `tie:format` and `tie:coalesce`.
+- The Spring Boot starter registers a `JexlExpressionEngine` when `tie-jexl` is on the classpath and passes any
+  `ExpressionEngine` bean to the `Tie` bean.
+
+### Changed
+
+- `FieldDefinition` has a new `expression` component after `defaultMode`, so its canonical constructor changed.
+  The builder is unaffected.
+- A credential equal to `***` (what `DefinitionWriter` writes for a literal one) is now a configuration problem.
+- `copyFrom` of a field that has an `expression` is a configuration problem: the copy would get the value before
+  the expression.
+
 ## [0.4.0] — 2026-11-09
 
 ### Added
