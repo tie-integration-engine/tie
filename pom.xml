@@ -37,6 +37,7 @@
 
     <modules>
         <module>tie-core</module>
+        <module>tie-jexl</module>
         <module>tie-spring-boot-starter</module>
     </modules>
 
@@ -59,6 +60,7 @@
         <logback.version>1.6.6</logback.version>
         <sshd.version>2.20.1</sshd.version>
         <json-schema-validator.version>3.0.9</json-schema-validator.version>
+        <commons-jexl.version>3.7.1</commons-jexl.version>
 
         <!-- Integration tests tagged "slow" (1 GB streams, 200,000-row XLSX) only run with -P release -->
         <tie.excludedTestGroups>slow</tie.excludedTestGroups>
@@ -81,6 +83,16 @@
                 <groupId>io.github.tie-integration-engine</groupId>
                 <artifactId>tie-core</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.tie-integration-engine</groupId>
+                <artifactId>tie-jexl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-jexl3</artifactId>
+                <version>${commons-jexl.version}</version>
             </dependency>
 
             <dependency>
