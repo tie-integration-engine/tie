@@ -95,6 +95,11 @@ IntegrationDefinition definition = DefinitionLoader.fromYaml(inputStream);
 Unknown properties and invalid definitions throw a `ConfigurationException` listing every problem. The
 JSON schema of the document is published in the jar as `/tie-definition.schema.json`.
 
+XML and JSON records are found by name (`xml.recordElement`, `json.recordProperty`) or, when the name is not
+known in advance, by position: on import, an XML layout without `recordElement` reads every child of the root
+element as a record, and `json: { firstArray: true }` reads the root array or the first array property of the
+root object. A layout fed only by provided inputs (`PROVIDED_STREAM`) does not need a `fileNamePattern`.
+
 ### With Spring Boot
 
 Add `tie-spring-boot-starter`. It creates a `Tie` bean unless you declare one, registers every

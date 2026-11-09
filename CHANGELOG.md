@@ -6,6 +6,21 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- XML imports without `recordElement`: every child of the root element is a record, whatever its name (text,
+  comments and processing instructions under the root are ignored). Exports still require `recordElement`.
+- `json.firstArray`: with no `recordProperty`, the records are the root array or, for a root object, the first
+  top-level property whose value is an array; earlier properties are skipped without being read. It cannot be
+  combined with `recordProperty` on import and is ignored on export. `JsonOptions` gets a builder.
+- A root import layout may omit `fileNamePattern` when every input channel is a `ProvidedStreamChannel`; a
+  declared pattern is still validated.
+
+### Changed
+
+- `JsonOptions` has a new `firstArray` record component, so its canonical constructor changed; use
+  `JsonOptions.builder()`. `JsonOptions.DEFAULTS` keeps the same values.
+
 ## [0.3.0] — 2026-11-09
 
 ### Added
