@@ -26,7 +26,7 @@ Requires Java 25. Licensed under the MIT License.
 <dependency>
     <groupId>io.github.tie-integration-engine</groupId>
     <artifactId>tie-core</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
