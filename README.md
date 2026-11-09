@@ -82,6 +82,7 @@ layouts:
     fields:
       - { name: taxId, column: nif, textTransforms: [UPPER] }
       - { name: born, type: DATE, typeFormat: dd/MM/yyyy }
+      - { name: bornIso, inInput: false, copyFrom: born, copyMode: CANONICAL }   # 2026-12-31
 ```
 
 ```java
@@ -124,7 +125,8 @@ partial file never appears under its final name.
   at a time.
 - **Persistence**: watermarks, processed-file registries and line history are yours to store.
 - **Transactions**: TIE never undoes what your consumer applied. Use `FileHook.onFileCompleted` to
-  commit per file before the file is moved and the watermark advances.
+  commit per file before the file is moved and the watermark advances. The hook is also called for
+  provided inputs, which are then spooled to the working directory first.
 
 ## Security
 
