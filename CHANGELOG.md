@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-11-09
+
 ### Added
 
 - `DefinitionWriter.toJson` / `toYaml`: an `IntegrationDefinition` built with the Java API (or loaded) written as
@@ -113,7 +115,8 @@ First release.
 - Stable catalogs of line error codes, file error types and warning codes.
 - Spring Boot 4 starter.
 
-[Unreleased]: https://github.com/tie-integration-engine/tie/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/tie-integration-engine/tie/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/tie-integration-engine/tie/releases/tag/v0.5.0
 [0.4.0]: https://github.com/tie-integration-engine/tie/releases/tag/v0.4.0
 [0.3.0]: https://github.com/tie-integration-engine/tie/releases/tag/v0.3.0
 [0.2.0]: https://github.com/tie-integration-engine/tie/releases/tag/v0.2.0
