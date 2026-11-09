@@ -6,6 +6,23 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `copyMode` on a field with `copyFrom` (`CopyMode.TEXT` or `CANONICAL`, also in YAML/JSON and the schema).
+  With `CANONICAL`, an imported copy receives the canonical text of the source's typed value
+  (`2026-12-31`, `1234.50`, `true`) whatever the source's `typeFormat`. When the source is not `STRING`
+  and the copy's own steps leave that text unchanged, the target tries the canonical form before its
+  `typeFormat`. `TEXT`, the default, keeps the 0.1.0 behaviour. Ignored on export. `copyMode` without
+  `copyFrom` is a configuration error.
+
+### Changed
+
+- `FileHook` is now called for provided inputs too. With a hook registered, a provided input is spooled to
+  the working directory and gets `onFileReceived` (null `timestamp`, `size` = bytes read) and
+  `onFileCompleted`, like a channel file. Without a hook nothing changes.
+- `FieldDefinition` has a new `copyMode` component after `copyFrom`, so its canonical constructor changed.
+  The builder is unaffected.
+
 ## [0.1.0] — 2026-11-08
 
 First release.
