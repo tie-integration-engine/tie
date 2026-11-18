@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-11-18
+
 ### Changed
 
 - A listed file whose name matches the patterns of several root layouts no longer fails the run with
@@ -129,7 +131,8 @@ First release.
 - Stable catalogs of line error codes, file error types and warning codes.
 - Spring Boot 4 starter.
 
-[Unreleased]: https://github.com/tie-integration-engine/tie/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/tie-integration-engine/tie/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/tie-integration-engine/tie/releases/tag/v0.6.0
 [0.5.0]: https://github.com/tie-integration-engine/tie/releases/tag/v0.5.0
 [0.4.0]: https://github.com/tie-integration-engine/tie/releases/tag/v0.4.0
 [0.3.0]: https://github.com/tie-integration-engine/tie/releases/tag/v0.3.0
