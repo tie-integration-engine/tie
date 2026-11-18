@@ -162,6 +162,7 @@ tie:
 | Situation | Result |
 |---|---|
 | Invalid configuration | `ConfigurationException` before any file is touched |
+| A name matches the patterns of several layouts | Ignored if any of them already covers it (watermark or "already processed"); otherwise the run fails with `AMBIGUOUS_LAYOUT` before any file |
 | A line with field errors, or rejected by the consumer | The line is rejected with every error (stable `code` and `args`); the file goes on |
 | Rejections above `rejectionThreshold` | The file fails |
 | Structural error in the middle of a file | `STREAMING`: earlier lines stay delivered. `VALIDATE_THEN_DELIVER`: nothing is delivered |

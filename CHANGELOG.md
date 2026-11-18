@@ -6,6 +6,20 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- A listed file whose name matches the patterns of several root layouts no longer fails the run with
+  `AMBIGUOUS_LAYOUT` when any of those layouts already covers it: its timestamp is not after that layout's
+  watermark (with `duplicateProtection.watermark`), or the `alreadyProcessed` predicate reports it. It is ignored
+  and logged at DEBUG. A file none of them covers still fails the run with `AMBIGUOUS_LAYOUT`, and it is never
+  assigned to one of the layouts. Old files left on a server no longer block a definition that gains an
+  overlapping pattern.
+
+### Fixed
+
+- With a name matching several patterns, each layout's watermark is compared with the timestamp extracted by
+  its own pattern, not by the last pattern that matched.
+
 ## [0.5.0] — 2026-11-09
 
 ### Added
